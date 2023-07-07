@@ -53,8 +53,6 @@ Visualization Manager:
           Value: true
         laser:
           Value: true
-        imu_link:
-          Value: true
         map:
           Value: true
         odom:
@@ -69,8 +67,6 @@ Visualization Manager:
           odom:
             base_link:
               laser:
-                {}
-              imu_link:
                 {}
       Update Interval: 0
       Value: true
