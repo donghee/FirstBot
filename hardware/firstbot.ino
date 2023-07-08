@@ -67,7 +67,7 @@ void initMotorController() {
    digitalWrite(MOTOR_L_BREAK_PIN, LOW);
    digitalWrite(MOTOR_R_BREAK_PIN, LOW);
    digitalWrite(MOTOR_L_FR_PIN, LOW);
-   digitalWrite(MOTOR_R_FR_PIN, HIGH); 
+   digitalWrite(MOTOR_R_FR_PIN, HIGH);
  }
  
  void setMotorSpeed(int i, int spd) {
@@ -104,6 +104,12 @@ void initMotorController() {
   void setMotorSpeeds(int leftSpeed, int rightSpeed) {
     setMotorSpeed(LEFT, leftSpeed);
     setMotorSpeed(RIGHT, rightSpeed);
+
+  // Serial.println("---");
+  // Serial.print("MOTOR SPEED: ");
+  // Serial.print(leftSpeed);
+  // Serial.print(", ");
+  // Serial.println(rightSpeed);
   }
 
 // PID
@@ -119,12 +125,12 @@ unsigned long nextPID = PID_INTERVAL;
 typedef struct {
   double TargetTicksPerFrame;    // target speed in ticks per frame
   double TargetTicks;    // target position in ticks per frame  
-  double Encoder;                  // encoder count
-  double PrevEnc;                  // last encoder count
-  double PrevErr;                  // last error  
-  double PrevInput;                // last input
+  long Encoder;                  // encoder count
+  long PrevEnc;                  // last encoder count
+  long PrevErr;                  // last error  
+  int PrevInput;                // last input
   double ITerm;                    //integrated term
-  double output;                    // last motor setting
+  long output;                    // last motor setting
 }
 SetPointInfo;
 
@@ -134,7 +140,7 @@ SetPointInfo leftPID, rightPID;
 double Kp = 0.5;
 double Kd = 0.2;
 double Ki = 0.001;
-int Ko = 1;
+double Ko = 1.0;
 
 unsigned char isMoving = 0; // is the base in motion?
 unsigned char isSpeedControl = 0;
@@ -165,14 +171,14 @@ void controlPosition(SetPointInfo * p) {
   double Kp = 0.2;
   double Kd = 0.003;
   double Ki = 0.0001;
-  int Ko = 1;
+  double Ko = 1;
 
   double Perror;
-  double output;
-  double input;
+  long output;
+  int input;
 
   Perror = p->TargetTicks - p->Encoder;
-  output = Kp * Perror + Kd * (Perror - p->PrevErr) + p->ITerm;
+  output = (int)(Kp * Perror + Kd * (Perror - p->PrevErr) + p->ITerm);
 
   p->PrevErr = Perror;
   p->PrevEnc = p->Encoder;
@@ -190,21 +196,21 @@ void controlPosition(SetPointInfo * p) {
 
 /* PID routine to compute the next motor commands */
 void controlSpeed(SetPointInfo * p) {
-  double Perror;
-  double output;
-  double input;
+  long Perror;
+  long output;
+  int input;
 
-  input = (p->Encoder - p->PrevEnc);
+  input = (p->Encoder - p->PrevEnc); // speed input
 //  input = p->PrevInput
 //  p->PrevInput += input;
-  Perror = p->TargetTicksPerFrame - input;
+  Perror = (long)(p->TargetTicksPerFrame) - input;
 
-  output = Kp * Perror + Kd * (Perror - p->PrevErr) + p->ITerm;
+  output = (long)((Kp * Perror + Kd * (Perror - p->PrevErr) + p->ITerm) / Ko)  ;
 //  output = (Kp * Perror - Kd * (input - p->PrevInput) + p->ITerm) / Ko;
   p->PrevErr = Perror;
   p->PrevEnc = p->Encoder;
+  output += p->output; // p->output += output
 
-  // speed
   if (output >= MAX_PWM)
     output = MAX_PWM;
   else if (output <= -MAX_PWM)
@@ -212,7 +218,7 @@ void controlSpeed(SetPointInfo * p) {
   else
     p->ITerm += Ki * Perror;
 
-  p->output += output; // accel -> speed -> pwm
+  p->output = output; 
   p->PrevInput = input;
 }
 
@@ -243,7 +249,7 @@ void updateControl() {
   // Serial.print(", ");
   // Serial.println(rightPID.PrevErr);
 
-  // Serial.print("PID.output: ");
+  // Serial.print("PID.output (PWM): ");
   // Serial.print(leftPID.output);
   // Serial.print(", ");
   // Serial.println(rightPID.output);
@@ -258,6 +264,16 @@ void updateControl() {
   // Serial.print(l_duration);
   // Serial.print(", ");
   // Serial.println(r_duration);
+
+  // Serial.print("PID: ");
+  // Serial.print(Kp, 3);
+  // Serial.print(":");
+  // Serial.print(Kd, 3);
+  // Serial.print(":");
+  // Serial.print(Ki, 3);
+  // Serial.print(":");
+  // Serial.print(Ko);
+  // Serial.println("");
 
   /* Set the motor speeds accordingly */
   setMotorSpeeds((int)leftPID.output, (int)rightPID.output);
@@ -300,7 +316,7 @@ int runCommand() {
   int i = 0;
   char *p = argv1;
   char *str;
-  int pid_args[4];
+  double pid_args[4];
   arg1 = atoi(argv1);
   arg2 = atoi(argv2);
   
@@ -329,7 +345,6 @@ int runCommand() {
     Serial.println("OK");
     break;
   case READ_ENCODERS:
-    Serial.flush();
     Serial.print(readEncoder(LEFT));
     Serial.print(" ");
     Serial.println(readEncoder(RIGHT));
@@ -403,9 +418,6 @@ void setup() {
 
   pinMode(MOTOR_L_FR_PIN, OUTPUT);
   pinMode(MOTOR_R_FR_PIN, OUTPUT);
-
-  // digitalWrite(MOTOR_L_BREAK_PIN, LOW);
-  // digitalWrite(MOTOR_R_BREAK_PIN, LOW);
 
   // setting the rising edge interrupt
   pinMode(MOTOR_L_WCNT_PIN, INPUT_PULLUP);
