@@ -30,8 +30,8 @@ from launch.substitutions import ThisLaunchFileDir
 def generate_launch_description():
     use_sim_time = LaunchConfiguration('use_sim_time', default='false')
 
-    rviz_config_dir = os.path.join(get_package_share_directory('tank_cartographer'),
-                                   'rviz', 'tank_cartographer.rviz')
+    rviz_config_dir = os.path.join(get_package_share_directory('firstbot_cartographer'),
+                                   'rviz', 'firstbot_cartographer.rviz')
 
     return LaunchDescription([
         DeclareLaunchArgument(

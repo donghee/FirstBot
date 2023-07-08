@@ -29,11 +29,11 @@ from launch.substitutions import ThisLaunchFileDir
 
 def generate_launch_description():
     use_sim_time = LaunchConfiguration('use_sim_time', default='false')
-    tank_cartographer_prefix = get_package_share_directory('tank_cartographer')
+    firstbot_cartographer_prefix = get_package_share_directory('firstbot_cartographer')
     cartographer_config_dir = LaunchConfiguration('cartographer_config_dir', default=os.path.join(
-                                                  tank_cartographer_prefix, 'config'))
+                                                  firstbot_cartographer_prefix, 'config'))
     configuration_basename = LaunchConfiguration('configuration_basename',
-                                                 default='tank_rplidar.lua')
+                                                 default='firstbot_rplidar.lua')
 
     resolution = LaunchConfiguration('resolution', default='0.05')
     publish_period_sec = LaunchConfiguration('publish_period_sec', default='1.0')

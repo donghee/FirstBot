@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 3.5)
-project(tank_cartographer)
+project(firstbot_navigation2)
 
 # Default to C99
 if(NOT CMAKE_C_STANDARD)
@@ -33,8 +33,9 @@ if(BUILD_TESTING)
 endif()
 
 install(
-  DIRECTORY config launch rviz
+  DIRECTORY launch map param rviz
   DESTINATION share/${PROJECT_NAME}
 )
+
 
 ament_package()
