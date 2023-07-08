@@ -14,7 +14,8 @@ diff_cont:
     left_wheel_names: ['left_wheel_joint']
     right_wheel_names: ['right_wheel_joint']
     wheels_per_side: 1
-    wheel_separation: 0.22
+    #wheel_separation: 0.22
+    wheel_separation: 0.19
     wheel_radius: 0.035
     base_frame_id: 'base_link'
     use_stamped_vel: false
@@ -23,24 +24,24 @@ diff_cont:
 
     # Velocity and acceleration limits
     # Whenever a min_* is unspecified, default to -max_*
-    linear.x.has_velocity_limits: true
-    linear.x.has_acceleration_limits: true
-    linear.x.has_jerk_limits: false
-    linear.x.max_velocity: 0.15
-    linear.x.min_velocity: -0.15
-    linear.x.max_acceleration: 1.0
-    linear.x.max_jerk: 0.0
-    linear.x.min_jerk: 0.0
+    #linear.x.has_velocity_limits: true
+    #linear.x.has_acceleration_limits: true
+    #linear.x.has_jerk_limits: false
+    #linear.x.max_velocity: 0.15
+    #linear.x.min_velocity: -0.15
+    #linear.x.max_acceleration: 1.0
+    #linear.x.max_jerk: 0.0
+    #linear.x.min_jerk: 0.0
  
-    angular.z.has_velocity_limits: true
-    angular.z.has_acceleration_limits: true
-    angular.z.has_jerk_limits: false
-    angular.z.max_velocity: 0.15
-    angular.z.min_velocity: -0.15
-    angular.z.max_acceleration: 1.0
-    angular.z.min_acceleration: -1.0
-    angular.z.max_jerk: 0.0
-    angular.z.min_jerk: 0.0
+    #angular.z.has_velocity_limits: true
+    #angular.z.has_acceleration_limits: true
+    #angular.z.has_jerk_limits: false
+    #angular.z.max_velocity: 0.15
+    #angular.z.min_velocity: -0.15
+    #angular.z.max_acceleration: 1.0
+    #angular.z.min_acceleration: -1.0
+    #angular.z.max_jerk: 0.0
+    #angular.z.min_jerk: 0.0
 
 # joint_state_broadcaster:
 #   ros__parameters:
