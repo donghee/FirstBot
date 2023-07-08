@@ -1,13 +1,8 @@
 name: ros2_project
 root: ~/ros2_ws
-on_project_start: colcon build --symlink-install
+#on_project_start: colcon build --symlink-install
 
 windows:
-  - build:
-      layout: even-vertical
-      panes:
-        - history -s 'colcon build --symlink-install'
-        - sleep 10; ros2 topic list
   - bringup:
       layout: even-vertical
       panes:
@@ -22,11 +17,18 @@ windows:
   - lidar:
       layout: even-vertical
       panes:
-        - history -s 'ros2 launch sllidar_ros2 sllidar_launch.py serial_port:=/dev/ttyUSB1'
-        - history -s 'ros2 run tf2_ros static_transform_publisher 0 0 0.2 0 0 90 1 base_link laser'
+       - ros2 launch sllidar_ros2 sllidar_launch.py serial_port:=/dev/ttyUSB1
+       - ros2 run tf2_ros static_transform_publisher 0 0 0.2 0 0 90 1 base_link laser
+       #- history -s 'ros2 launch sllidar_ros2 sllidar_launch.py serial_port:=/dev/ttyUSB1'
+       #- history -s 'ros2 run tf2_ros static_transform_publisher 0 0 0.2 0 0 90 1 base_link laser'
   - slam:
       layout: tiled
       panes:
-        - history -s 'ros2 launch tank_cartographer cartographer.launch.py'
+        - history -s 'ros2 launch firstbot_cartographer cartographer.launch.py'
         - history -s 'ros2 run nav2_map_server map_saver_cli -f map'
-        - history -s 'ros2 launch tank_navigation2 navigation2.launch.py map:=$HOME/map.yaml'
+        - history -s 'ros2 launch firstbot_navigation2 navigation2.launch.py map:=$HOME/map.yaml'
+  - build:
+      layout: even-vertical
+      panes:
+        - history -s 'colcon build --symlink-install'
+        - sleep 10; ros2 topic list
