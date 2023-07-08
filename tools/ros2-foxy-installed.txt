@@ -245,3 +245,7 @@ ros-foxy-visualization-msgs
 ros-foxy-xacro
 ros-foxy-yaml-cpp-vendor
 ros-foxy-zstd-vendor
+ros-foxy-twist-mux
+python3-colcon-common-extensions 
+python3-rosdep2
+tmuxinator
