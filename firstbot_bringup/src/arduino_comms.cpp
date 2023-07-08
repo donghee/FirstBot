@@ -9,7 +9,6 @@
 
 void ArduinoComms::setup(const std::string &serial_device, int32_t baud_rate, int32_t timeout_ms)
 {  
-
     std::cout << "port: " << serial_device << std::endl;
     std::cout << "baudrate: " << baud_rate << std::endl;
     std::cout << "timeout_ms: " << timeout_ms << std::endl;
@@ -40,7 +39,7 @@ void ArduinoComms::readEncoderValues(int &val_1, int &val_2)
 
     val_1 = std::atoi(token_1.c_str());
     val_2 = std::atoi(token_2.c_str());
-    std::cout << "encoder: " << val_1 << ", " << val_2 << std::endl;
+    //std::cout << "encoder: " << val_1 << ", " << val_2 << std::endl;
 }
 
 void ArduinoComms::setMotorValues(int val_1, int val_2)
@@ -59,16 +58,8 @@ void ArduinoComms::setPidValues(float k_p, float k_d, float k_i, float k_o)
 
 std::string ArduinoComms::sendMsg(const std::string &msg_to_send, bool print_output)
 {
-    serial_conn_.flush();
     serial_conn_.write(msg_to_send);
-    //serial_conn_.flushInput(); // DONGHEE
-    std::cout << "Sent: " << msg_to_send << std::endl;
-    std::string response = "";
-
-    if(serial_conn_.waitReadable()) {
-    	response = serial_conn_.readline();
-    	std::cout << "Received: " << response << std::endl;
-    }
+    std::string response = serial_conn_.readline();
 
     if (print_output)
     {
