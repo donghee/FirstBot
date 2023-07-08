@@ -12,11 +12,11 @@ windows:
       layout: even-vertical
       panes:
         - ros2 launch firstbot_bringup test_robot.launch.py 
-        - sleep 10; ros2 topic echo /cmd_vel
+        - history -s 'ros2 topic echo /cmd_vel'
   - teleop:
       layout: even-vertical
       panes:
-        - sleep 10; ros2 topic echo /odom | grep -A 9 "pose"
+        - history -s 'ros2 topic echo /odom | grep -A 9 "pose"'
         - ros2 run key_teleop key_teleop
         - ros2 run twist_mux twist_mux --ros-args --remap cmd_vel_out:=diff_cont/cmd_vel_unstamped --params-file ./src/config/twist_mux.yaml
   - lidar:
