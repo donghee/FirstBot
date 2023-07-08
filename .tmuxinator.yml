@@ -1,0 +1,31 @@
+name: ros2_project
+root: ~/ros2_ws
+on_project_start: source ~/ros2_ws/install/setup.bash && colcon build --symlink-install
+
+windows:
+  - build:
+      layout: even-vertical
+      panes:
+        - colcon build --symlink-install
+        - sleep 10; ros2 topic list
+  - bringup:
+      layout: even-vertical
+      panes:
+        - ros2 launch firstbot_bringup test_robot.launch.py 
+        - ros2 topic echo /odom | grep -A 9 "pose"
+  - teleop:
+      layout: even-vertical
+      panes:
+        - ros2 run key_teleop key_teleop
+        - ros2 run twist_mux twist_mux --ros-args --remap cmd_vel_out:=diff_cont/cmd_vel_unstamped --params-file ./src/config/twist_mux.yaml
+  - lidar:
+      layout: even-vertical
+      panes:
+        - ros2 launch sllidar_ros2 sllidar_launch.py serial_port:=/dev/ttyUSB1 
+        - ros2 run tf2_ros static_transform_publisher 0 0 0.2 0 0 90 1 base_link laser
+  - slam:
+      layout: tiled
+      panes:
+        - ros2 launch tank_cartographer cartographer.launch.py
+        - ros2 run nav2_map_server map_saver_cli -f map
+        - ros2 launch tank_navigation2 navigation2.launch.py map:=$HOME/map.yaml
