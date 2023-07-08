@@ -81,7 +81,7 @@ return_type DiffDriveArduino::start()
   // arduino.setPidValues(14,7,0,100);
   //arduino_.setPidValues(30, 20, 0, 100);
   //arduino_.setPidValues(0.1, 0.01, 0.001, 1.0);
-  //arduino_.setPidValues(0.5, 0.2, 0.001, 100.0);
+  arduino_.setPidValues(0.5, 0.2, 0.001, 5.0);
 
   status_ = hardware_interface::status::STARTED;
 
@@ -140,15 +140,10 @@ hardware_interface::return_type DiffDriveArduino::write()
 
   //RCLCPP_INFO(logger_, "cmd: %f rads_per_count: %f loop: %f", l_wheel_.cmd, l_wheel_.rads_per_count, cfg_.loop_rate);
 
-  arduino_.setMotorValues(l_wheel_.cmd / l_wheel_.rads_per_count / cfg_.loop_rate/2.0, r_wheel_.cmd / r_wheel_.rads_per_count / cfg_.loop_rate/2.0);
-
-
-
+  arduino_.setMotorValues(l_wheel_.cmd / l_wheel_.rads_per_count / cfg_.loop_rate/2.5, r_wheel_.cmd / r_wheel_.rads_per_count / cfg_.loop_rate/2.5);
+  //arduino_.setMotorValues(l_wheel_.cmd / l_wheel_.rads_per_count / cfg_.loop_rate, r_wheel_.cmd / r_wheel_.rads_per_count / cfg_.loop_rate);
 
   return return_type::OK;
-
-
-  
 }
 
 
