@@ -38,7 +38,7 @@ install(
     urdf
     rviz
     config
-    worlds
+    models
   DESTINATION
     share/${PROJECT_NAME}/
 )
