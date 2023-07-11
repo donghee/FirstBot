@@ -1,5 +1,5 @@
 name: ros2_project
-root: ~/ros2_ws
+root: ~/firstbot_ws
 #on_project_start: colcon build --symlink-install
 
 windows:
