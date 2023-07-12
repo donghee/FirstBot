@@ -15,7 +15,7 @@ def generate_launch_description():
     use_sim_time = LaunchConfiguration('use_sim_time', default='false')
 
     rviz_config_dir = os.path.join(
-        get_package_share_directory('nav2_bringup'),
+        get_package_share_directory('firstbot_navigation2'),
         'rviz',
         'nav2_default_view.rviz')
 
