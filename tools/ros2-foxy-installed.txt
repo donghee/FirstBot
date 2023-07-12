@@ -249,3 +249,7 @@ ros-foxy-twist-mux
 python3-colcon-common-extensions 
 python3-rosdep2
 tmuxinator
+libraspberrypi-bin
+v4l-utils
+ros-foxy-v4l2-camera
+ros-foxy-image-transport-plugins           
