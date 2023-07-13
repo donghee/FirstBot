@@ -17,8 +17,7 @@ windows:
   - lidar:
       layout: even-vertical
       panes:
-       - ros2 launch sllidar_ros2 sllidar_launch.py serial_port:=/dev/ttyUSB1
-       - ros2 run tf2_ros static_transform_publisher 0 0 0.2 0 0 90 1 base_link laser
+       - ros2 launch firstbot_bringup rplidar.launch.py
        #- history -s 'ros2 launch sllidar_ros2 sllidar_launch.py serial_port:=/dev/ttyUSB1'
        #- history -s 'ros2 run tf2_ros static_transform_publisher 0 0 0.2 0 0 90 1 base_link laser'
   - slam:
